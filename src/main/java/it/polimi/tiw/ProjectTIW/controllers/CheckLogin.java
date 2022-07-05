@@ -24,13 +24,12 @@ public class CheckLogin extends HttpServlet {
 	private Connection connection;
        
   
-	public void init() throws ServletException
-	   {connection = ConnectionHandler.getConnection(getServletContext());
-	   }
+	public void init() throws ServletException{
+		connection = ConnectionHandler.getConnection(getServletContext());
+	}
 	
     public CheckLogin() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	
@@ -47,26 +46,31 @@ public class CheckLogin extends HttpServlet {
 			throw new Exception("Missing or empty credential value");
 			}
 		}catch (Exception e) {
-				
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing credential value");
-				return;
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Missing credential value");
+			return;
 		}
 		
 		try {
 			String hashPassword = PasswordHashGenerator.getSHA(password);
 			user = userDAO.checkCredentials(username,hashPassword);
 		} catch (Exception e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error in checking credentials");
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.getWriter().println("Error in checking credentials");
 			return;
 		}
 		
 		if (user == null){
-		
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			response.getWriter().println("Incorrect credentials");
 		}
 		else {
 			request.getSession().setAttribute("user", user);
+			response.setStatus(HttpServletResponse.SC_OK);
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().println(username);
 		}
-
 	}
 	
 	public void destroy() {

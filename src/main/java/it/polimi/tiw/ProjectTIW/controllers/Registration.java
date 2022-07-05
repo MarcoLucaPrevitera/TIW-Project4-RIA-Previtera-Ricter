@@ -57,7 +57,8 @@ public class Registration extends HttpServlet {
 			}
 		}
 		catch (Exception e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing or empty registration parameters");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println( "Missing or empty registration parameters");
 			return;
 		}
 
@@ -83,15 +84,19 @@ public class Registration extends HttpServlet {
 				userDAO.createUser(username,name,surname,hashPassword);
 				
 		
+				response.setStatus(HttpServletResponse.SC_OK);
+				response.getWriter().println("Registration successfull");
 			}
 			
 			else {
-				
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				response.getWriter().println(errorResponse);
 			}
 		}
 		
 		catch (Exception e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "There was an error in the registration");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("There was an error in the registration");
 			return;
 		}
 	}

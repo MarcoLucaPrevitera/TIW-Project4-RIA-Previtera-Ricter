@@ -13,10 +13,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import it.polimi.tiw.ProjectTIW.DAO.AccountDAO;
 import it.polimi.tiw.ProjectTIW.DAO.TransferDAO;
 import it.polimi.tiw.ProjectTIW.beans.Account;
+import it.polimi.tiw.ProjectTIW.beans.AccountDetail;
 import it.polimi.tiw.ProjectTIW.beans.Transfer;
 import it.polimi.tiw.ProjectTIW.beans.User;
 import it.polimi.tiw.ProjectTIW.utils.*;
@@ -55,11 +60,20 @@ public class GetAccount extends HttpServlet {
 			if(account == null)
 			  {response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Account not found");
 				return;}
-			if(account.getUserId()!=user.getId())
-			  {response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not allowed");
-				return;}
+			//if(account.getUserId()!=user.getId())
+			//  {response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not allowed");
+			//	return;}
 			TransferDAO transferDAO = new TransferDAO(con);
 			transfers = transferDAO.findTransferByAccount(accountId);
+			
+			
+			AccountDetail accountDetail = new AccountDetail(account,transfers);
+			String json = new Gson().toJson(accountDetail);
+			
+			response.setStatus(HttpServletResponse.SC_OK);
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(json);
 		}
 		catch(SQLException e){
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Error in sql request");
