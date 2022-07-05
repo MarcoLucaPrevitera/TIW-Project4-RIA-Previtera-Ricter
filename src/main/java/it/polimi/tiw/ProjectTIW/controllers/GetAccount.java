@@ -46,7 +46,8 @@ public class GetAccount extends HttpServlet {
 			accountId = Integer.parseInt(request.getParameter("accountId"));
 		}
 		catch (NumberFormatException e){
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad parameter");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Bad parameter");
 			return;
 		}
 		
@@ -57,9 +58,11 @@ public class GetAccount extends HttpServlet {
 		
 		try {
 			account = accountDAO.findAccountById(accountId);
-			if(account == null)
-			  {response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Account not found");
-				return;}
+			if(account == null){
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				response.getWriter().println("Account not found");
+				return;
+				}
 			//if(account.getUserId()!=user.getId())
 			//  {response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not allowed");
 			//	return;}
@@ -76,7 +79,8 @@ public class GetAccount extends HttpServlet {
 			response.getWriter().write(json);
 		}
 		catch(SQLException e){
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Error in sql request");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Error in sql request");
 			return;
 		}
 		

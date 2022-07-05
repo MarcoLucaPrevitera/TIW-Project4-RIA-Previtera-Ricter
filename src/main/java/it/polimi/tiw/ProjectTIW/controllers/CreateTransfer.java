@@ -69,7 +69,8 @@ public class CreateTransfer extends HttpServlet {
 			}
 		}
 		catch (Exception e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing or incorrect transfer parameters");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Missing or incorrect transfer parameters");
 			return;
 		}
 		
@@ -77,11 +78,13 @@ public class CreateTransfer extends HttpServlet {
 		try{
 			accountOrig = accountDAO.findAccountById(originAccountId);
 			if(accountOrig == null){
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Account not found");
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				response.getWriter().println("Account not found");
 				return;
 				}
 			if(accountOrig.getUserId()!=user.getId()){
-				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not allowed");
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				response.getWriter().println("User not allowed");
 				return;
 				}
 			
@@ -103,19 +106,18 @@ public class CreateTransfer extends HttpServlet {
 				long time = date.getTime();
 				Timestamp ts = new Timestamp(time);
 				int transferId = transferDAO.createTransfer(accountOrig,accountDest,motivation,ts,amount);
-				
-	
-				
 			}
 			
 			else {
-
-
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				response.getWriter().println(errorResponse);
 			}
 			
 			
 			
 		} catch(Exception e ) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("There was an error in the transfer");
 			
 		}
 		

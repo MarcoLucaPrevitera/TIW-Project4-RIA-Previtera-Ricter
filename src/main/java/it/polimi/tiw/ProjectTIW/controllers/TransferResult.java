@@ -44,7 +44,8 @@ public class TransferResult extends HttpServlet {
 			transferId = Integer.parseInt(request.getParameter("id"));
 		}
 		catch(Exception e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad parameter");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Bad parameter");
 			return;
 		}
 
@@ -58,19 +59,22 @@ public class TransferResult extends HttpServlet {
 		try {
 			transfer = transferDAO.findTransferById(transferId);
 			if(transfer == null){
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Transfer not found");
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				response.getWriter().println("Transfer not found");
 				return;
 			}
 
 			accountTransfer = accountDAO.findAccountById(transfer.getAccountId());
 
 			if(accountTransfer.getUserId()!=user.getId()){
-				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not allowed ");
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				response.getWriter().println("User not allowed");
 				return;
 			}
 		}
 		catch(SQLException e){
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Error in sql request");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Error in sql request");
 			return;
 		}
 
