@@ -1,4 +1,4 @@
-package it.polimi.tiw.ProjectTIW.beans;
+package it.polimi.tiw.ProjectTIWRIA.beans;
 
 
 import java.sql.Timestamp;

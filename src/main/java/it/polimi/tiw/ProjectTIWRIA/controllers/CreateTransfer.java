@@ -1,9 +1,10 @@
-package it.polimi.tiw.ProjectTIW.controllers;
+package it.polimi.tiw.ProjectTIWRIA.controllers;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.ServletException;
@@ -14,11 +15,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringEscapeUtils;
 
-import it.polimi.tiw.ProjectTIW.DAO.AccountDAO;
-import it.polimi.tiw.ProjectTIW.DAO.TransferDAO;
-import it.polimi.tiw.ProjectTIW.beans.Account;
-import it.polimi.tiw.ProjectTIW.beans.User;
-import it.polimi.tiw.ProjectTIW.utils.ConnectionHandler;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import it.polimi.tiw.ProjectTIWRIA.DAO.AccountDAO;
+import it.polimi.tiw.ProjectTIWRIA.DAO.TransferDAO;
+import it.polimi.tiw.ProjectTIWRIA.beans.Account;
+import it.polimi.tiw.ProjectTIWRIA.beans.Transfer;
+import it.polimi.tiw.ProjectTIWRIA.beans.User;
+import it.polimi.tiw.ProjectTIWRIA.utils.ConnectionHandler;
 
 
 @WebServlet("/CreateTransfer")
@@ -106,6 +111,25 @@ public class CreateTransfer extends HttpServlet {
 				long time = date.getTime();
 				Timestamp ts = new Timestamp(time);
 				int transferId = transferDAO.createTransfer(accountOrig,accountDest,motivation,ts,amount);
+				
+				Transfer transfer = transferDAO.findTransferById(transferId);
+				
+				JsonObject jsonObject = new JsonObject();
+				jsonObject.addProperty("amount",transfer.getAmount());
+				jsonObject.addProperty("payment_reference",transfer.getMotivation());
+				jsonObject.addProperty("date",new SimpleDateFormat("dd-mm-yyyy hh:mm:ss").format(transfer.getDate()));
+				jsonObject.addProperty("code_origin",transfer.getAccountCodeOrigin());
+				jsonObject.addProperty("code_dest",transfer.getAccountCodeDest());
+				jsonObject.addProperty("prev_balance_origin",transfer.getBalanceOrigin());
+				jsonObject.addProperty("curr_balance_origin",transfer.getBalanceOrigin() - transfer.getAmount());
+				jsonObject.addProperty("prev_balance_dest",transfer.getBalanceDest());
+				jsonObject.addProperty("curr_balance_dest",transfer.getBalanceDest() + transfer.getAmount());
+			
+				String json = new Gson().toJson(jsonObject);
+				response.setStatus(HttpServletResponse.SC_OK);
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				response.getWriter().write(json);
 			}
 			
 			else {

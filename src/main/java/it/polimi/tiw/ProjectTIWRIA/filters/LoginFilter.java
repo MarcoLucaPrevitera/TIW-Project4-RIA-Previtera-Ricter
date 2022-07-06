@@ -1,4 +1,4 @@
-package it.polimi.tiw.ProjectTIW.filters;
+package it.polimi.tiw.ProjectTIWRIA.filters;
 
 import java.io.IOException;
 import javax.servlet.Filter;
@@ -31,7 +31,8 @@ public class LoginFilter implements Filter {
 
 		HttpSession s = req.getSession();
 		if (s.isNew() || s.getAttribute("user") == null) {
-			res.sendRedirect(loginpath);
+			res.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			res.setHeader("location",loginpath);
 			return;
 		}
 		

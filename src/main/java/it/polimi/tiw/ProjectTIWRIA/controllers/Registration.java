@@ -1,4 +1,4 @@
-package it.polimi.tiw.ProjectTIW.controllers;
+package it.polimi.tiw.ProjectTIWRIA.controllers;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -12,9 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringEscapeUtils;
 
-import it.polimi.tiw.ProjectTIW.DAO.UserDAO;
-import it.polimi.tiw.ProjectTIW.utils.ConnectionHandler;
-import it.polimi.tiw.ProjectTIW.utils.PasswordHashGenerator;
+import it.polimi.tiw.ProjectTIWRIA.DAO.UserDAO;
+import it.polimi.tiw.ProjectTIWRIA.utils.ConnectionHandler;
+import it.polimi.tiw.ProjectTIWRIA.utils.PasswordHashGenerator;
 
 
 @WebServlet("/Registration")

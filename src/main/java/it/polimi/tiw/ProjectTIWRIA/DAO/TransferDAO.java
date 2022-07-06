@@ -1,4 +1,4 @@
-package it.polimi.tiw.ProjectTIW.DAO;
+package it.polimi.tiw.ProjectTIWRIA.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 
-import it.polimi.tiw.ProjectTIW.beans.*;
+import it.polimi.tiw.ProjectTIWRIA.beans.*;
 
 public class TransferDAO {
    private Connection con;

@@ -1,4 +1,4 @@
-package it.polimi.tiw.ProjectTIW.controllers;
+package it.polimi.tiw.ProjectTIWRIA.controllers;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -12,10 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
-import it.polimi.tiw.ProjectTIW.DAO.UserDAO;
-import it.polimi.tiw.ProjectTIW.beans.User;
-import it.polimi.tiw.ProjectTIW.utils.ConnectionHandler;
-import it.polimi.tiw.ProjectTIW.utils.PasswordHashGenerator;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import it.polimi.tiw.ProjectTIWRIA.DAO.UserDAO;
+import it.polimi.tiw.ProjectTIWRIA.beans.User;
+import it.polimi.tiw.ProjectTIWRIA.utils.ConnectionHandler;
+import it.polimi.tiw.ProjectTIWRIA.utils.PasswordHashGenerator;
 
 
 @WebServlet("/CheckLogin")
@@ -65,11 +68,18 @@ public class CheckLogin extends HttpServlet {
 			response.getWriter().println("Incorrect credentials");
 		}
 		else {
+			
 			request.getSession().setAttribute("user", user);
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("name", user.getName());
+			jsonObject.addProperty("surname",user.getSurname());
+			jsonObject.addProperty("username",user.getUsername());
+			
+			String json = new Gson().toJson(jsonObject);
 			response.setStatus(HttpServletResponse.SC_OK);
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
-			response.getWriter().println(username);
+			response.getWriter().write(json);
 		}
 	}
 	

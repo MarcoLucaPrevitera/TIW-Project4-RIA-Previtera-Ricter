@@ -1,4 +1,4 @@
-package it.polimi.tiw.ProjectTIW.controllers;
+package it.polimi.tiw.ProjectTIWRIA.controllers;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -15,19 +15,19 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 
-import it.polimi.tiw.ProjectTIW.DAO.AccountDAO;
-import it.polimi.tiw.ProjectTIW.beans.Account;
-import it.polimi.tiw.ProjectTIW.beans.User;
-import it.polimi.tiw.ProjectTIW.utils.ConnectionHandler;
+import it.polimi.tiw.ProjectTIWRIA.DAO.AccountDAO;
+import it.polimi.tiw.ProjectTIWRIA.beans.Account;
+import it.polimi.tiw.ProjectTIWRIA.beans.User;
+import it.polimi.tiw.ProjectTIWRIA.utils.ConnectionHandler;
 
 
-@WebServlet("/Home")
-public class GoToHome extends HttpServlet {
+@WebServlet("/GetAllAccounts")
+public class GetAllAccounts extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private Connection connection = null;
     
-    public GoToHome() {
+    public GetAllAccounts() {
         super();
     }
 

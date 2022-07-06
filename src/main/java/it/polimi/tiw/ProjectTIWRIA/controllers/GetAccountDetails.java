@@ -1,4 +1,4 @@
-package it.polimi.tiw.ProjectTIW.controllers;
+package it.polimi.tiw.ProjectTIWRIA.controllers;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -15,20 +15,20 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 
-import it.polimi.tiw.ProjectTIW.DAO.AccountDAO;
-import it.polimi.tiw.ProjectTIW.DAO.TransferDAO;
-import it.polimi.tiw.ProjectTIW.beans.Account;
-import it.polimi.tiw.ProjectTIW.beans.AccountDetail;
-import it.polimi.tiw.ProjectTIW.beans.Transfer;
-import it.polimi.tiw.ProjectTIW.beans.User;
-import it.polimi.tiw.ProjectTIW.utils.*;
+import it.polimi.tiw.ProjectTIWRIA.DAO.AccountDAO;
+import it.polimi.tiw.ProjectTIWRIA.DAO.TransferDAO;
+import it.polimi.tiw.ProjectTIWRIA.beans.Account;
+import it.polimi.tiw.ProjectTIWRIA.beans.AccountDetail;
+import it.polimi.tiw.ProjectTIWRIA.beans.Transfer;
+import it.polimi.tiw.ProjectTIWRIA.beans.User;
+import it.polimi.tiw.ProjectTIWRIA.utils.*;
 
 
 @WebServlet("/AccountDetails")
-public class GetAccount extends HttpServlet {
+public class GetAccountDetails extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection con;
-	public GetAccount() {
+	public GetAccountDetails() {
 		super(); 
 	}
 
@@ -60,9 +60,11 @@ public class GetAccount extends HttpServlet {
 				response.getWriter().println("Account not found");
 				return;
 				}
-			//if(account.getUserId()!=user.getId())
-			//  {response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not allowed");
-			//	return;}
+			if(account.getUserId()!=user.getId()) {
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				response.getWriter().println("User not allowed");
+				return;
+				}
 			TransferDAO transferDAO = new TransferDAO(con);
 			transfers = transferDAO.findTransferByAccount(accountId);
 			

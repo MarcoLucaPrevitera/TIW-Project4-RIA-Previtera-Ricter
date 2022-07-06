@@ -1,4 +1,4 @@
-package it.polimi.tiw.ProjectTIW.DAO;
+package it.polimi.tiw.ProjectTIWRIA.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import it.polimi.tiw.ProjectTIW.beans.User;
+import it.polimi.tiw.ProjectTIWRIA.beans.User;
 
 public class UserDAO {
 	private Connection con;

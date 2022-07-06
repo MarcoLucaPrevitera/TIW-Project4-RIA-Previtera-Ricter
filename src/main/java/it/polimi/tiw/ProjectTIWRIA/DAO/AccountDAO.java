@@ -1,4 +1,4 @@
-package it.polimi.tiw.ProjectTIW.DAO;
+package it.polimi.tiw.ProjectTIWRIA.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import it.polimi.tiw.ProjectTIW.beans.Account;
+import it.polimi.tiw.ProjectTIWRIA.beans.Account;
 
 public class AccountDAO {
 	private Connection con;
