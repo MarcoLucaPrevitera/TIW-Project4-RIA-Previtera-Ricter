@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" media="all"
+	href="./css/style.css" />
+<title>Home</title>
+</head>
+<body>
+	<div align="right">
+		<a href="Logout">Logout</a>
+	</div>
+	<table>
+		<tr>
+			<td>
+				<table id="id_accountslist">
+					<thead>
+						<tr>
+							<th colspan=3 align="center">My Accounts</th>
+						</tr>
+						<tr>
+							<th>Account Number</th>
+							<th>Balance</th>
+							<th>Details</th>
+						</tr>
+					</thead>
+					<tbody id="id_accountslistbody">
+					</tbody>
+				</table>
+
+				<form id="id_transferform" action=#>
+					<table>
+						<thead>
+							<tr>
+								<th colspan=2 align="center">Create New Transfer</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Payee Username</td>
+								<td><input type="text" name="usernameDest" required></td>
+							</tr>
+							<tr>
+								<td colspan=2>
+									<table id="id_autofilltable"></table>
+								</td>
+							</tr>
+							<tr>
+								<td>Payee Account Number</td>
+								<td><input type="text" name="codeAccountDest" required>
+								</td>
+							</tr>
+							<tr>
+								<td>Payment reference</td>
+								<td><input type="text" name="motivation" required></td>
+							</tr>
+							<tr>
+								<td>Amount (&euro;)</td>
+								<td><input type="text" name="amount" required></td>
+							</tr>
+							<tr>
+								<td><input type="hidden" name="originAccount"></td>
+							</tr>
+							<tr>
+								<td colspan=2 align="center"><input type="button"
+									name="sendButton" value="Send transfer"></td>
+							</tr>
+						</tbody>
+					</table>
+				</form>
+
+				<div id="id_transferresult">Transfer successful</div>
+
+				<table>
+					<thead>
+						<tr>
+							<th><b>Account origin: </b><span id="id_resaccountorigin">IT345DD</span>&nbsp;&nbsp;&nbsp;</th>
+							<th><b>Account destination: </b><span id="id_resaccountdest">IT565FF</span></th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr>
+							<td><b>Previous balance: </b><span
+								id="id_resprevbalanceorig">24</span>&euro;</td>
+							<td><b>Previous balance: </b><span
+								id="id_resprevbalancedest">67</span>&euro;</td>
+						</tr>
+
+						<tr>
+							<td><b>Current balance: </b><span id="id_rescurrbalanceorig">24</span>&euro;</td>
+							<td><b>Current balance: </b><span id="id_rescurrbalancedest">67</span>&euro;</td>
+						</tr>
+
+						<tr>
+							<td colspan=2 align="center"><input type="button"
+								name="createNewTransfer" value="New Transfer"></td>
+
+						</tr>
+					</tbody>
+				</table>
+
+			</td>
+
+
+
+			<td>
+				<h1>Account details</h1> 
+				<b>Name: </b> <span id="id_name">Francesca</span> <br> 
+				<b>Surname:</b> <span id="id_surname">Ricter</span> <br>
+				<b>Username:</b> <span id="id_username">francesca.ricter@gmail.com</span>
+				<br> <b>Account Number: </b> <span id="id_accountnumber">IT3565345RE</span>
+				<br> <b>Account Balance: </b> <span id="id_accountbalance">50 </span> &euro; <br> <br>
+
+				<div id="id_emptyalert"> No transfers yet</div>
+
+				<table id="id_transferslist">
+					<thead>
+						<tr>
+							<th>Date</th>
+							<th>Payer Account Number</th>
+							<th>Payee Account Number</th>
+							<th>Payment Reference</th>
+							<th>Amount</th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+			</td>
+
+		</tr>
+	</table>
+</body>
+</html>

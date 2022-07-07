@@ -1,11 +1,9 @@
 table, th, tr {
   border: 1px solid black;
   padding: 7px;
+  vertical-align: top;
 }
 
-table, th, tr, td {
-  padding: 5px;
-}
 
 .outcoming {color: red;}
 .incoming {color: green;}
