@@ -3,19 +3,29 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Login page</title>
+<script src="utils.js" charset="utf-8" defer></script>
+<script src="login.js" charset="utf-8" defer></script>
+
 </head>
 <body>
 	<h1>Welcome to our online bank!</h1>
-	<form action="CheckLogin" method="POST">
-		<table>
-		<tbody>
-		<tr> <td> Username: </td> <td> <input type="text" name="username" required> </td> </tr>
-		<tr> <td> Password: </td> <td> <input type="password" name="password" required> </td> </tr>
-		</tbody	>
-		</table>
-		<input type="submit" value="Login">
-		<p th:text=" ${errorMsg}"></p>
+	<form action="#">
+			<table>
+				<tbody>
+					<tr>
+						<td>Username:</td>
+						<td><input type="text" name="username" required></td>
+					</tr>
+					<tr>
+						<td>Password:</td>
+						<td><input type="password" name="password" required>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<input id="loginbutton" type="submit" value="Login">
+			<p id="errormessage"></p>
 	</form>
-	<a href = "./RegistrationPage.html"> Register now! </a>
+	<a href="./RegistrationPage.html"> Register now! </a>
 </body>
 </html>
