@@ -4,7 +4,7 @@
 	
 	  window.addEventListener("load", () => {
 	    if (sessionStorage.getItem("username") == null) {
-	      //window.location.href = "index.html";
+	      window.location.href = "index.html";
 	    } else {
 	      pageOrchestrator.start(); // initialize the components
 	      pageOrchestrator.refresh();
@@ -17,7 +17,7 @@
 		this.accountlist = _accountlist;
 		this.accountlistbody = _accountlistbody;
 		
-		this.show = function(next) {
+		this.show = function(click) {
 	      var self = this;
 	      makeCall("GET", "GetAllAccounts", null,
 	        function(req) {
@@ -30,7 +30,7 @@
 	                return;
 	              }
 	              self.update(accountsToShow); // self visible by closure
-	              if (next) next(); // show the default element of the list if present
+	              if (click) click(); // show the default element of the list if present
 	            
 	          } else if (req.status == 403) {
                   //indow.location.href = req.getResponseHeader("Location");
@@ -55,7 +55,7 @@
 	        accountcell.textContent = account.code;
 	        row.appendChild(accountcell);
 	        balancecell = document.createElement("td");
-	        balancecell.textContent = account.balance.toFixed(2);
+	        balancecell.textContent = account.balance.toFixed(2)+ " €";
 	        row.appendChild(balancecell);
 	        linkcell = document.createElement("td");
 	        anchor = document.createElement("a");
@@ -74,12 +74,27 @@
 	      this.accountlistbody.style.visibility = "visible";
 
 	    }
+	    
+	    this.autoclick = function(accountId) {
+	      var e = new Event("click");
+	      var selector = "a[accountid='" + accountId + "']";
+	      var anchorToClick = (accountId) ? document.querySelector(selector) : this.accountlistbody.querySelectorAll("a")[0];
+	      if (anchorToClick) anchorToClick.dispatchEvent(e);
+	    }
+	    
+	    this.reset = function(){
+			
+		}
 		
 	}
 	
 	function TransferForm(_transferform,_autofilltable){
 		this.transferform=_transferform;
 		this.autofilltable=_autofilltable;
+		
+		this.reset = function(){
+			
+		}
 	}
 
 	function TransferResult(params){
@@ -88,6 +103,10 @@
 		this.rescurrbalanceorig = params['rescurrbalanceorig'];
 		this.rescurrbalanceodest = params['rescurrbalanceodest'];
 		this.createNewTransfer = params['createNewTransfer'];
+		
+		this.reset = function(){
+			
+		}
 	}
 	
 	function AccountDetails(params){
@@ -173,7 +192,12 @@
 		        
 		        self.transfersbody.appendChild(row);
 			});
-	}
+		}
+	
+		this.reset = function(){
+				this.emptyalert.style.visibility="hidden";
+				this.transferslist.style.visibility="hidden";
+		}
 	  
 	}
 	
@@ -212,7 +236,15 @@
 	
 	
 	this.refresh = function(currentAccount){
-		accountsList.show();
+		accountsList.show(function() {
+	        accountsList.autoclick(currentAccount); 
+	      });
+	      
+	    accountsList.reset();
+	    transferForm.reset();
+	    transferResult.reset();
+	    accountDetails.reset();
+	    
 	}
 	}
 	
