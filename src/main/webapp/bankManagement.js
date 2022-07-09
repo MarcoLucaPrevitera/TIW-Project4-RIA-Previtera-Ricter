@@ -55,7 +55,7 @@
 	        accountcell.textContent = account.code;
 	        row.appendChild(accountcell);
 	        balancecell = document.createElement("td");
-	        balancecell.textContent = account.balance;
+	        balancecell.textContent = account.balance.toFixed(2);
 	        row.appendChild(balancecell);
 	        linkcell = document.createElement("td");
 	        anchor = document.createElement("a");
@@ -97,6 +97,7 @@
 		this.accountnumber = params['accountnumber'];
 		this.accountbalance = params['accountbalance'];
 		this.transferslist=params['transferslist'];
+		this.transfersbody = params['transfersbody'];
 		this.emptyalert= params['emptyalert'];
 		
 		this.show = function(accountId) {
@@ -122,12 +123,56 @@
 	    };
 	    
 	    this.update = function(details, transfers){
+		    var row,datecell,origcodecell,destcodecell,motivationcell,amountcell;
 			var self = this;
 			self.name.textContent=sessionStorage.getItem("name");
 			self.surname.textContent=sessionStorage.getItem("surname");
 			self.username.textContent=sessionStorage.getItem("username");
 			self.accountnumber.textContent=details.code;
-			self.accountbalance.textContent=details.balance;
+			self.accountbalance.textContent=details.balance.toFixed(2);
+			
+			if (transfers.length == 0) {
+	                this.transferslist.style.visibility="hidden";
+	                this.emptyalert.style.visibility="visible";
+	                return;
+	              }
+			
+			this.emptyalert.style.visibility="hidden";
+			this.transferslist.style.visibility="visible";
+			this.transfersbody.innerHTML="";
+			
+			transfers.forEach(function(transfer){
+			    row = document.createElement("tr");
+			    datecell = document.createElement("td");
+		        datecell.textContent = transfer.date;
+		        row.appendChild(datecell);
+		        origcodecell = document.createElement("td");
+		        origcodecell.textContent = transfer.accountCodeOrigin;
+		        if(transfer.accountCodeOrigin===details.code){
+					origcodecell.className="myself";
+				}
+		        row.appendChild(origcodecell);
+		        destcodecell = document.createElement("td");
+		        destcodecell.textContent = transfer.accountCodeDest;
+		        if(transfer.accountCodeDest===details.code){
+					destcodecell.className="myself";
+				}
+		        row.appendChild(destcodecell);
+		        motivationcell = document.createElement("td");
+		        motivationcell.textContent = transfer.motivation;
+		        row.appendChild(motivationcell);
+		        amountcell = document.createElement("td");
+		        amountcell.textContent = transfer.amount.toFixed(2) +" €";
+		        if(transfer.amount>0){
+					amountcell.className="incoming";
+				}
+				else{
+					amountcell.className="outcoming";
+				}
+		        row.appendChild(amountcell);
+		        
+		        self.transfersbody.appendChild(row);
+			});
 	}
 	  
 	}
@@ -154,6 +199,7 @@
 				 accountnumber:document.getElementById("id_accountnumber"),
 				 accountbalance:document.getElementById("id_accountbalance"),
 				 transferslist: document.getElementById("id_transferslist"),
+				 transfersbody: document.getElementById("id_transfersbody"),
 				 emptyalert:document.getElementById("id_emptyalert")
 				});
 			

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import it.polimi.tiw.ProjectTIWRIA.DAO.AccountDAO;
 import it.polimi.tiw.ProjectTIWRIA.DAO.TransferDAO;
@@ -70,7 +71,8 @@ public class GetAccountDetails extends HttpServlet {
 			
 			
 			AccountDetail accountDetail = new AccountDetail(account,transfers);
-			String json = new Gson().toJson(accountDetail);
+			Gson gson = new GsonBuilder().setDateFormat("dd-mm-yyyy hh:mm:ss").create();
+			String json = gson.toJson(accountDetail);
 			
 			response.setStatus(HttpServletResponse.SC_OK);
 			response.setContentType("application/json");
