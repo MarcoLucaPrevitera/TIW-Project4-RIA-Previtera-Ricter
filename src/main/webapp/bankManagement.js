@@ -1,10 +1,10 @@
 {
-	let accountsList,accountDetails,transfersList, transferResult, transferForm,
+	let accountsList,accountDetails, transferResult, transferForm,
 	pageOrchestrator = new PageOrchestrator();
 	
 	  window.addEventListener("load", () => {
 	    if (sessionStorage.getItem("username") == null) {
-	      window.location.href = "index.html";
+	      //window.location.href = "index.html";
 	    } else {
 	      pageOrchestrator.start(); // initialize the components
 	      pageOrchestrator.refresh();
@@ -65,7 +65,7 @@
 	        
 	        anchor.setAttribute('accountid', account.id); // set a custom HTML attribute
 	        anchor.addEventListener("click", (e) => {
-	        //  missionDetails.show(e.target.getAttribute("accountid")); // the list must know the details container
+	        	accountDetails.show(e.target.getAttribute("accountid"));
 	        }, false);
 	        anchor.href = "#";
 	        row.appendChild(linkcell);
@@ -91,16 +91,45 @@
 	}
 	
 	function AccountDetails(params){
-	  this.name = params['name'];
-	  this.surname = params['surname'];
-	  this.ussername = params['username'];
-	  this.accountnumber = params['accountnumber'];
-	  this.accountbalance = params['accountbalance'];
+		this.name = params['name'];
+		this.surname = params['surname'];
+		this.username = params['username'];
+		this.accountnumber = params['accountnumber'];
+		this.accountbalance = params['accountbalance'];
+		this.transferslist=params['transferslist'];
+		this.emptyalert= params['emptyalert'];
+		
+		this.show = function(accountId) {
+	      var self = this;
+	      makeCall("GET", "AccountDetails?accountId="+accountId, null,
+	        function(req) {
+	          if (req.readyState == XMLHttpRequest.DONE) {
+	            var message = req.responseText;
+	            if (req.status == 200) {
+	              var accountDetails = JSON.parse(req.responseText).account;
+	              var transfers = JSON.parse(req.responseText).transferList;
+	              self.update(accountDetails,transfers); // self visible by closure
+	            
+	          } else if (req.status == 403) {
+                  //indow.location.href = req.getResponseHeader("Location");
+                  // window.sessionStorage.removeItem('username');
+                  }
+                  else {
+	            //self.alert.textContent = message;
+	          }}
+	        }
+	      );
+	    };
+	    
+	    this.update = function(details, transfers){
+			var self = this;
+			self.name.textContent=sessionStorage.getItem("name");
+			self.surname.textContent=sessionStorage.getItem("surname");
+			self.username.textContent=sessionStorage.getItem("username");
+			self.accountnumber.textContent=details.code;
+			self.accountbalance.textContent=details.balance;
 	}
-	
-	function TransfersList(_transferslist,_emptyalert){
-		this.transferslist=_transferslist;
-		this.emptyalert=_emptyalert;
+	  
 	}
 	
 	function PageOrchestrator(){
@@ -123,10 +152,10 @@
 				 surname:document.getElementById("id_surname"),
 				 username:document.getElementById("id_username"),
 				 accountnumber:document.getElementById("id_accountnumber"),
-				 accountbalance:document.getElementById("id_accountbalance")
+				 accountbalance:document.getElementById("id_accountbalance"),
+				 transferslist: document.getElementById("id_transferslist"),
+				 emptyalert:document.getElementById("id_emptyalert")
 				});
-			
-			transfersList = new TransfersList(document.getElementById("id_transferslist"),document.getElementById("id_emptyalert"));
 			
 			document.querySelector("a[href='Logout']").addEventListener('click', () => {
 	        window.sessionStorage.removeItem('username');
