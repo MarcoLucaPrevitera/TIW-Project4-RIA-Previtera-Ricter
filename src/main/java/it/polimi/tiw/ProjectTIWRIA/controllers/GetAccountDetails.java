@@ -71,7 +71,7 @@ public class GetAccountDetails extends HttpServlet {
 			
 			
 			AccountDetail accountDetail = new AccountDetail(account,transfers);
-			Gson gson = new GsonBuilder().setDateFormat("dd-mm-yyyy hh:mm:ss").create();
+			Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy HH:mm:ss").create();
 			String json = gson.toJson(accountDetail);
 			
 			response.setStatus(HttpServletResponse.SC_OK);
