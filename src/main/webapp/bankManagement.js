@@ -8,7 +8,7 @@
 		} else {
 			pageOrchestrator.start(); // initialize the components
 			pageOrchestrator.refresh();
-		} // display initial content
+		}
 	}, false);
 
 
@@ -26,18 +26,18 @@
 						if (req.status == 200) {
 							var accountsToShow = JSON.parse(req.responseText);
 							if (accountsToShow.length == 0) {
-								//self.alert.textContent = "No accounts yet!";
+								document.getElementById("id_mainTable").innerHTML ="There are no accounts in your name.";
 								return;
 							}
 							self.update(accountsToShow); // self visible by closure
 							if (click) click(); // show the default element of the list if present
 
 						} else if (req.status == 403) {
-							//indow.location.href = req.getResponseHeader("Location");
-							// window.sessionStorage.removeItem('username');
+							logout();
+							window.location.href = req.getResponseHeader("Location");
 						}
 						else {
-							//self.alert.textContent = message;
+							//nothing
 						}
 					}
 				}
@@ -108,13 +108,16 @@
 				              	self.transferform.style.display = "none";
 				              	transferResult.showTransferSuccess(transferDetails);
 				              	var currentAccount = self.transferform.querySelector("input[type = 'hidden']").value;
-				              	accountsList.autoclick(currentAccount);
+				              	accountsList.show(function() {
+									accountsList.autoclick(currentAccount);
+								});
 				                break;
 				              case 400: // bad request
 				                transferResult.showError(message);
 				                break;
 				              case 403:
-				              
+				              	logout();
+				              	window.location.href = x.getResponseHeader("Location");
 				                break;
 				            }
 				          }
@@ -152,10 +155,10 @@
 			this.transfermessage.className = "incoming";
 			this.resaccountorig.textContent = transferData.code_origin;
 			this.resaccountdest.textContent = transferData.code_dest;
-			this.resprevbalanceorig.textContent = transferData.prev_balance_origin;
-			this.resprevbalancedest.textContent = transferData.prev_balance_dest;
-			this.rescurrbalanceorig.textContent = transferData.curr_balance_origin;
-			this.rescurrbalanceodest.textContent = transferData.curr_balance_dest;
+			this.resprevbalanceorig.textContent = transferData.prev_balance_origin.toFixed(2);
+			this.resprevbalancedest.textContent = transferData.prev_balance_dest.toFixed(2);
+			this.rescurrbalanceorig.textContent = transferData.curr_balance_origin.toFixed(2);
+			this.rescurrbalanceodest.textContent = transferData.curr_balance_dest.toFixed(2);
 			
 			this.createNewTransfer.addEventListener("click", (e) => {
 				this.reset();
@@ -197,11 +200,11 @@
 							self.update(accountDetails, transfers); // self visible by closure
 
 						} else if (req.status == 403) {
-							//indow.location.href = req.getResponseHeader("Location");
-							// window.sessionStorage.removeItem('username');
+							logout();
+							window.location.href = req.getResponseHeader("Location");
 						}
 						else {
-							//self.alert.textContent = message;
+							//nothing
 						}
 					}
 				}
@@ -268,6 +271,12 @@
 		}
 
 	}
+	
+	function logout(){
+		window.sessionStorage.removeItem('username');
+		window.sessionStorage.removeItem('name');
+		window.sessionStorage.removeItem('surname');
+	}
 
 	function PageOrchestrator() {
 
@@ -302,9 +311,7 @@
 				});
 
 			document.querySelector("a[href='Logout']").addEventListener('click', () => {
-				window.sessionStorage.removeItem('username');
-				window.sessionStorage.removeItem('name');
-				window.sessionStorage.removeItem('surname');
+				logout();
 			});
 		}
 
