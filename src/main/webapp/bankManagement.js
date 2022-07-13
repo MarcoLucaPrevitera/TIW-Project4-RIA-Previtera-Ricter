@@ -95,6 +95,7 @@
 		this.formButton = this.transferform.querySelector('input[type="button"]');
 		
 		this.registerListener = function(){
+			var self=this;
 			this.formButton.addEventListener("click", (e) => {
 		          if (this.transferform.checkValidity()) {
 				      makeCall("POST", 'CreateTransfer', e.target.closest("form"),
@@ -103,16 +104,17 @@
 				            var message = x.responseText;
 				            switch (x.status) {
 				              case 200:
-				              	
+				              	var transferDetails = JSON.parse(message);
+				              	self.transferform.style.display = "none";
+				              	transferResult.showTransferSuccess(transferDetails);
+				              	var currentAccount = self.transferform.querySelector("input[type = 'hidden']").value;
+				              	accountsList.autoclick(currentAccount);
 				                break;
 				              case 400: // bad request
-				                
+				                transferResult.showError(message);
 				                break;
-				              case 401: // unauthorized
-				                  
-				                  break;
-				              case 500: // server error
-				            	
+				              case 403:
+				              
 				                break;
 				            }
 				          }
@@ -126,6 +128,8 @@
 
 		}
 		this.reset = function() {
+			this.transferform.style.display = "block";
+			this.transferform.style.visibility = "visible";
 			this.autofilltable.style.visibility = "hidden";
 		}
 	}
@@ -133,11 +137,37 @@
 	function TransferResult(params) {
 		this.maincontainer = params['maincontainer'];
 		this.transfermessage = params['transfermessage'];
+		this.resaccountorig = params['resaccountorig'];
+		this.resaccountdest = params['resaccountdest'];
 		this.resprevbalanceorig = params['resprevbalanceorig'];
 		this.resprevbalancedest = params['resprevbalancedest'];
 		this.rescurrbalanceorig = params['rescurrbalanceorig'];
 		this.rescurrbalanceodest = params['rescurrbalanceodest'];
 		this.createNewTransfer = params['createNewTransfer'];
+
+		this.showTransferSuccess = function(transferData) {
+			this.maincontainer.style.visibility = "visible";
+			this.transfermessage.style.visibility = "visible";
+			this.transfermessage.textContent = "Transaction successful!"
+			this.transfermessage.className = "incoming";
+			this.resaccountorig.textContent = transferData.code_origin;
+			this.resaccountdest.textContent = transferData.code_dest;
+			this.resprevbalanceorig.textContent = transferData.prev_balance_origin;
+			this.resprevbalancedest.textContent = transferData.prev_balance_dest;
+			this.rescurrbalanceorig.textContent = transferData.curr_balance_origin;
+			this.rescurrbalanceodest.textContent = transferData.curr_balance_dest;
+			
+			this.createNewTransfer.addEventListener("click", (e) => {
+				this.reset();
+				transferForm.reset();
+			});
+		}
+
+		this.showError = function(errorMessage){
+			this.transfermessage.style.visibility = "visible";
+			this.transfermessage.className = "outcoming";
+			this.transfermessage.textContent = errorMessage;
+		}
 
 		this.reset = function() {
 			this.maincontainer.style.visibility = "hidden";
@@ -250,6 +280,8 @@
 			transferResult = new TransferResult({
 				maincontainer: document.getElementById("id_transfersuccessful"),
 				transfermessage: document.getElementById("id_transferresult"),
+				resaccountorig : document.getElementById("id_resaccountorigin"),
+				resaccountdest : document.getElementById("id_resaccountdest"),
 				resprevbalanceorig: document.getElementById("id_resprevbalanceorig"),
 				resprevbalancedest: document.getElementById("id_resprevbalancedest"),
 				rescurrbalanceorig: document.getElementById("id_rescurrbalanceorig"),
