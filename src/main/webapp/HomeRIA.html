@@ -42,7 +42,6 @@
 				<br> <b>Account Number: </b> <span id="id_accountnumber">IT3565345RE</span>
 				<br> <b>Account Balance: </b> <span id="id_accountbalance">50 </span> &euro;
 
-				<h3 id="id_emptyalert"> No transfers yet</h3>
 
 				<table id="id_transferslist">
 					<thead>
@@ -56,12 +55,14 @@
 					</thead>
 					<tbody id = "id_transfersbody"></tbody>
 				</table>
+				
+				<h3 id="id_emptyalert"> No transfers yet</h3>
 			</td>
 			
 			<td>
 			
 			<form id="id_transferform" action=#>
-					<table>
+					<table class="transferform">
 						<thead>
 							<tr>
 								<th colspan=2 align="center">Create New Transfer</th>

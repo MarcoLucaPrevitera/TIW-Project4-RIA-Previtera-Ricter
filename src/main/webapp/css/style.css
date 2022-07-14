@@ -1,9 +1,41 @@
-table, th, tr {
-  border: 1px solid black;
-  padding: 7px;
-  margin: 10px;
-  vertical-align: top;
+#id_accountslist {
+	border: 1px solid black;
+  	padding: 6px;
+  	margin-right: 10px;
+	vertical-align: top;
 }
+
+#id_transferslist {
+	border: 1px solid black;
+  	padding: 6px;
+  	margin-top:15px;
+}
+
+.transferform{
+	border: 1px solid black;
+  	padding: 6px;
+}
+
+#id_transfersuccessful{
+	border: 1px solid black;
+  	padding: 6px;
+}
+
+#id_transferresult{
+	text-align: center;
+}
+
+table, th, tr{
+	vertical-align: top;
+	padding-right:4px;
+}
+
+td {
+	padding-right:6px;
+}
+
+input{box-sizing:border-box}
+
 
 
 .outcoming {color: red;}

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.ServletException;
@@ -118,9 +117,6 @@ public class CreateTransfer extends HttpServlet {
 				Transfer transfer = transferDAO.findTransferById(transferId);
 				
 				JsonObject jsonObject = new JsonObject();
-				jsonObject.addProperty("amount",transfer.getAmount());
-				jsonObject.addProperty("payment_reference",transfer.getMotivation());
-				jsonObject.addProperty("date",new SimpleDateFormat("dd-mm-yyyy hh:mm:ss").format(transfer.getDate()));
 				jsonObject.addProperty("code_origin",transfer.getAccountCodeOrigin());
 				jsonObject.addProperty("code_dest",transfer.getAccountCodeDest());
 				jsonObject.addProperty("prev_balance_origin",transfer.getBalanceOrigin());
