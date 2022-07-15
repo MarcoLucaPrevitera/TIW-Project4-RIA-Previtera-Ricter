@@ -109,7 +109,7 @@
 		}
 		
 		
-		this.registerListener = function(){
+		this.registerListeners = function(){
 			var self=this;
 			this.formButton.addEventListener("click", (e) => {
 		          if (this.transferform.checkValidity()) {
@@ -212,10 +212,26 @@
 		this.addForm = params['addForm'];
 		this.addButton = params['addButton'];
 
+		this.registerListeners = function(){
+			this.createNewTransfer.addEventListener("click", (e) => {
+				this.reset();
+				transferForm.reset();
+			});
+			
+			this.addButton.addEventListener("click", (e) => {
+				makeCall("POST", 'AddAddressBook', this.addForm, function(x){
+					if (x.status == 200) {
+						transferForm.getAddressBook();
+					}
+				});
+				this.addForm.style.visibility = "hidden";
+			});
+		}
+
+
 		this.showTransferSuccess = function(transferData) {
 			this.maincontainer.style.visibility = "visible";
-			this.transfermessage.style.visibility = "visible";
-			this.addForm.style.visibility = "visible";
+			this.transfermessage.style.visibility = "visible";			
 			this.transfermessage.textContent = "Transaction successful!"
 			this.transfermessage.className = "incoming";
 			this.addForm.contactAccountId.value = transferData.account_id_dest;
@@ -225,21 +241,18 @@
 			this.resprevbalancedest.textContent = transferData.prev_balance_dest.toFixed(2);
 			this.rescurrbalanceorig.textContent = transferData.curr_balance_origin.toFixed(2);
 			this.rescurrbalanceodest.textContent = transferData.curr_balance_dest.toFixed(2);
+			var self = this;
 			
-			
-			this.createNewTransfer.addEventListener("click", (e) => {
-				this.reset();
-				transferForm.reset();
+			this.addForm.style.visibility = "visible";
+			transferForm.addressBook.forEach(function(contact) {
+				if(contact.accountCode===transferData.code_dest){
+					self.addForm.style.visibility = "hidden";
+					return;
+				}
 			});
-			
-			this.addButton.addEventListener("click", (e) => {
-				makeCall("POST", 'AddAddressBook', this.addForm, function(x){});
-				this.addForm.style.visibility = "hidden";
-			});
-			
 			
 		}
-
+		
 		this.showError = function(errorMessage){
 			this.transfermessage.style.visibility = "visible";
 			this.transfermessage.className = "outcoming";
@@ -249,6 +262,7 @@
 		this.reset = function() {
 			this.maincontainer.style.visibility = "hidden";
 			this.transfermessage.style.visibility = "hidden";
+			this.addForm.style.visibility = "hidden";
 		}
 	}
 
@@ -355,7 +369,7 @@
 			accountsList = new AccountsList(document.getElementById("id_accountslist"), document.getElementById("id_accountslistbody"));
 
 			transferForm = new TransferForm(document.getElementById("id_transferform"), document.getElementById("id_autofilltable"));
-			transferForm.registerListener();
+			transferForm.registerListeners();
 
 			transferResult = new TransferResult({
 				maincontainer: document.getElementById("id_transfersuccessful"),
@@ -370,6 +384,7 @@
 				addForm : document.getElementById("id_addressbookform"),
 				addButton : document.getElementById("id_addcontactbutton")
 			});
+			transferResult.registerListeners();
 
 			accountDetails = new AccountDetails(
 				{
@@ -400,22 +415,5 @@
 
 		}
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

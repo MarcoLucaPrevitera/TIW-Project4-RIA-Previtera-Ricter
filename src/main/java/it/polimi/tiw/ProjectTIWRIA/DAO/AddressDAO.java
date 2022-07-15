@@ -24,7 +24,6 @@ private Connection con;
 			pstatement.setInt(1, userId);
 			pstatement.setInt(2, accountId);
 			pstatement.executeUpdate();
-			
 		}
 		
 		catch (SQLException e) {
