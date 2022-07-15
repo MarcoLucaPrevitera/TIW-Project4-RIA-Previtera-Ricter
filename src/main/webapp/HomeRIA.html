@@ -71,7 +71,7 @@
 						<tbody>
 							<tr>
 								<td>Payee Username</td>
-								<td><input type="text" name="usernameDest" required></td>
+								<td><input type="text" name="usernameDest" autocomplete="off" required></td>
 							</tr>
 							<tr>
 								<td colspan=2>
@@ -129,6 +129,19 @@
 						<tr>
 							<td colspan=2 align="center"><input type="button"
 								id="id_createNewTransfer" value="New Transfer"></td>
+
+						</tr>
+						<tr>
+							<td colspan=2 align="center">
+							
+							<form id = "id_addressbookform" action="#">
+							      <input type="hidden" name="contactAccountId">
+							      <input type="button"id="id_addcontactbutton" value="Add Contact">
+							</form>
+							
+							
+							</td>
+							
 
 						</tr>
 					</tbody>

@@ -36,9 +36,6 @@
 							logout();
 							window.location.href = req.getResponseHeader("Location");
 						}
-						else {
-							//nothing
-						}
 					}
 				}
 			);
@@ -83,9 +80,6 @@
 			if (anchorToClick) anchorToClick.dispatchEvent(e);
 		}
 
-		this.reset = function() {
-
-		}
 
 	}
 
@@ -93,6 +87,27 @@
 		this.transferform = _transferform;
 		this.autofilltable = _autofilltable;
 		this.formButton = this.transferform.querySelector('input[type="button"]');
+		this.addressBook;
+		
+		this.getAddressBook = function(){
+			var self = this;
+			
+			makeCall("GET", "GetAddressBook", null,
+				function(req) {
+					if (req.readyState == XMLHttpRequest.DONE) {
+						var message = req.responseText;
+						if (req.status == 200) {
+							self.addressBook = JSON.parse(req.responseText);
+							
+						} else if (req.status == 403) {
+							logout();
+							window.location.href = req.getResponseHeader("Location");
+						}
+					}
+				}
+			);
+		}
+		
 		
 		this.registerListener = function(){
 			var self=this;
@@ -128,8 +143,55 @@
 	    	 	      this.transferform.reportValidity();
 	    		  }  
 		 }, false);
+		 
+		 
+
+		 this.transferform.usernameDest.addEventListener("input", (e) => {
+				this.autocomplete(this.transferform.usernameDest.value);
+			});
 
 		}
+		
+		this.autocomplete = function(input){
+			var row,usernamecell, codecell, linkcell, linkText, anchor;
+			this.autofilltable.style.visibility ="visible";
+			this.autofilltable.innerHTML = "";
+			if(input.length===0){
+				return;
+			}
+			
+			
+			var self = this;
+			this.addressBook.forEach(function(contact) {
+				if(contact.username.substring(0,input.length)===input){
+					row = document.createElement("tr");
+					usernamecell = document.createElement("td");
+					usernamecell.innerHTML="<b>"+input+"</b>"+contact.username.substring(input.length);
+					row.appendChild(usernamecell);
+					codecell = document.createElement("td");
+					codecell.textContent = contact.accountCode;
+					row.appendChild(codecell);
+					linkcell = document.createElement("td");
+					anchor = document.createElement("a");
+					linkcell.appendChild(anchor);
+					linkText = document.createTextNode("Select");
+					anchor.appendChild(linkText);
+	
+					anchor.setAttribute('username', contact.username); // set a custom HTML attribute
+					anchor.setAttribute('code', contact.accountCode); // set a custom HTML attribute
+					anchor.addEventListener("click", (e) => {
+						self.transferform.usernameDest.value = e.target.getAttribute("username");
+						self.transferform.codeAccountDest.value = e.target.getAttribute("code");
+						self.autofilltable.innerHTML = "";
+					}, false);
+					anchor.href = "#";
+					row.appendChild(linkcell);
+					self.autofilltable.appendChild(row);
+				}
+			});
+			
+		}
+		
 		this.reset = function() {
 			this.transferform.style.display = "block";
 			this.transferform.style.visibility = "visible";
@@ -147,12 +209,16 @@
 		this.rescurrbalanceorig = params['rescurrbalanceorig'];
 		this.rescurrbalanceodest = params['rescurrbalanceodest'];
 		this.createNewTransfer = params['createNewTransfer'];
+		this.addForm = params['addForm'];
+		this.addButton = params['addButton'];
 
 		this.showTransferSuccess = function(transferData) {
 			this.maincontainer.style.visibility = "visible";
 			this.transfermessage.style.visibility = "visible";
+			this.addForm.style.visibility = "visible";
 			this.transfermessage.textContent = "Transaction successful!"
 			this.transfermessage.className = "incoming";
+			this.addForm.contactAccountId.value = transferData.account_id_dest;
 			this.resaccountorig.textContent = transferData.code_origin;
 			this.resaccountdest.textContent = transferData.code_dest;
 			this.resprevbalanceorig.textContent = transferData.prev_balance_origin.toFixed(2);
@@ -160,10 +226,18 @@
 			this.rescurrbalanceorig.textContent = transferData.curr_balance_origin.toFixed(2);
 			this.rescurrbalanceodest.textContent = transferData.curr_balance_dest.toFixed(2);
 			
+			
 			this.createNewTransfer.addEventListener("click", (e) => {
 				this.reset();
 				transferForm.reset();
 			});
+			
+			this.addButton.addEventListener("click", (e) => {
+				makeCall("POST", 'AddAddressBook', this.addForm, function(x){});
+				this.addForm.style.visibility = "hidden";
+			});
+			
+			
 		}
 
 		this.showError = function(errorMessage){
@@ -202,9 +276,6 @@
 						} else if (req.status == 403) {
 							logout();
 							window.location.href = req.getResponseHeader("Location");
-						}
-						else {
-							//nothing
 						}
 					}
 				}
@@ -295,7 +366,9 @@
 				resprevbalancedest: document.getElementById("id_resprevbalancedest"),
 				rescurrbalanceorig: document.getElementById("id_rescurrbalanceorig"),
 				rescurrbalanceodest: document.getElementById("id_rescurrbalancedest"),
-				createNewTransfer: document.getElementById("id_createNewTransfer")
+				createNewTransfer: document.getElementById("id_createNewTransfer"),
+				addForm : document.getElementById("id_addressbookform"),
+				addButton : document.getElementById("id_addcontactbutton")
 			});
 
 			accountDetails = new AccountDetails(
@@ -320,8 +393,7 @@
 			accountsList.show(function() {
 				accountsList.autoclick(currentAccount);
 			});
-
-			accountsList.reset();
+			transferForm.getAddressBook();
 			transferForm.reset();
 			transferResult.reset();
 			accountDetails.reset();

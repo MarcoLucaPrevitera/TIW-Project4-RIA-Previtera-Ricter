@@ -117,6 +117,7 @@ public class CreateTransfer extends HttpServlet {
 				Transfer transfer = transferDAO.findTransferById(transferId);
 				
 				JsonObject jsonObject = new JsonObject();
+				jsonObject.addProperty("account_id_dest",accountDest.getId());
 				jsonObject.addProperty("code_origin",transfer.getAccountCodeOrigin());
 				jsonObject.addProperty("code_dest",transfer.getAccountCodeDest());
 				jsonObject.addProperty("prev_balance_origin",transfer.getBalanceOrigin());

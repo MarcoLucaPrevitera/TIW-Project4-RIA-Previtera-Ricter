@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Registration page</title>
+<link rel="stylesheet" type="text/css" media="all" href="./css/coolstyle.css" />
+<script src="registration.js" charset="utf-8" defer></script>
+<script src="utils.js" charset="utf-8" defer></script>
+</head>
+<body>
+	<br>
+	<h1 align=center>Register with us for online banking!</h1>
+	<br>
+
+
+	<form action="#">
+		<fieldset>
+		<div align=center>
+			<table>
+				<tbody>
+					<tr>
+						<td align="center">Username</td>
+						<td><input type="text" name="username" required></td>
+					</tr>
+					<tr>
+						<td align="center">Name</td>
+						<td><input type="text" name="name" required></td>
+					</tr>
+					<tr>
+						<td align="center">Surname</td>
+						<td><input type="text" name="surname" required></td>
+					</tr>
+					<tr>
+						<td align="center"><b> Password </b></td>
+						<td><input type="password" name="password" required>
+						</td>
+					</tr>
+					<tr>
+						<td align="center"><b> Repeat Password&nbsp;&nbsp;&nbsp;
+						</b></td>
+						<td><input type="password" name="repeatPassword" required>
+						</td>
+					</tr>
+					<tr>
+						<td colspan=2 align="center"><br> 
+						<input id="id_registrationbutton" class="btn btn-info col-4" type="button" value="Register!">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<p id="id_registrationerror"></p>
+		</div>
+		</fieldset>
+	</form>
+
+	<div align="center">
+		<a href="./index.html"> Return to login </a>
+	</div>
+
+</body>
+</html>
