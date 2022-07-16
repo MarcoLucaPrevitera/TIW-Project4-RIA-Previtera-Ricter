@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Login page</title>
-<script src="utils.js" charset="utf-8" defer></script>
-<script src="login.js" charset="utf-8" defer></script>
+	<meta charset="ISO-8859-1">
+	<title>Login page</title>
+	<script src="utils.js" charset="utf-8" defer></script>
+	<script src="login.js" charset="utf-8" defer></script>
+	<link rel="stylesheet" type="text/css" media="all" href="./css/style.css" />
 
 </head>
 <body>
 	<h1>Welcome to our online bank!</h1>
-	<form action="#">
+	<form action="#" autocomplete="off">
 			<table>
 				<tbody>
 					<tr>
@@ -25,9 +26,8 @@
 			</table>
 			<input id="loginbutton" type="button" value="Login">
 			<br>
-			<font color="FF0000" id="errormessage"></font>
+			<p class="outcoming" id="errormessage"></p>
 	</form>
-	<br>
 	<a href="./Registration.html"> Register now! </a>
 </body>
 </html>

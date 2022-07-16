@@ -196,6 +196,7 @@
 			this.transferform.style.display = "block";
 			this.transferform.style.visibility = "visible";
 			this.autofilltable.style.visibility = "hidden";
+			this.autofilltable.innerHTML = "";
 		}
 	}
 
@@ -308,6 +309,7 @@
 
 			if (transfers.length == 0) {
 				this.transferslist.style.visibility = "hidden";
+				this.transfersbody.innerHTML = "";
 				this.emptyalert.style.visibility = "visible";
 				return;
 			}

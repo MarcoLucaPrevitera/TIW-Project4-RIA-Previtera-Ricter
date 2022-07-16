@@ -42,7 +42,7 @@
 				            var message = x.responseText;
 				            switch (x.status) {
 				              case 200:
-				                window.location.href = "HomeRIA.html";
+				                window.location.href = "index.html";
 				                break;
 				              case 400: // bad request
 				                errorText.textContent = message;
