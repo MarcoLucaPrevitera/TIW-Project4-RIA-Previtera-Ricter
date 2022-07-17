@@ -34,5 +34,7 @@
     <url-pattern>/AccountDetails</url-pattern> 
     <url-pattern>/Logout</url-pattern> 
     <url-pattern>/CreateTransfer</url-pattern>
+    <url-pattern>/GetAddressBook</url-pattern>
+    <url-pattern>/AddAddressBook</url-pattern>
  </filter-mapping>
 </web-app>
