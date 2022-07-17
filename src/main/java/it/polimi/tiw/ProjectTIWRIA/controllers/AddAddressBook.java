@@ -63,5 +63,11 @@ public class AddAddressBook extends HttpServlet {
 	}
 	
 	
-	
+	public void destroy() {
+		try {
+			ConnectionHandler.closeConnection(connection);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }
